@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Game Hub - Both PLAY Fixed</title>
+<title>🐶 Game Hub - Both PLAY Fixed</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#c94a2b">
@@ -85,7 +85,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
 <div id="confetti"></div>
 <div class="wrap">
 <div class="topBar">
-<div class="brand">🎲 Game Hub</div>
+<div class="brand">🎲 Game Hub 🐶 <span style="font-size:9px;background:#c94a2b;color:white;padding:2px 6px;border-radius:999px;vertical-align:middle">v10</span></div>
 <div style="display:flex;gap:6px">
 <button class="badge" onclick="showView('home')">🏠 Home</button>
 <button class="badge" id="voiceBtn" onclick="toggleVoice()">🗣️ Voice ON</button>
@@ -94,8 +94,8 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
 </div>
 
 <div id="homeView" class="view active">
-<div class="homeHero">
-<h1>Game Hub</h1>
+<div class="homeHero"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:32px">🐵</span><span style="font-size:11px;font-weight:900;background:#2e261e;color:#fdf8ef;padding:5px 10px;border-radius:999px;letter-spacing:0.5px">v10 LATEST BUILD</span><span style="font-size:10px;color:#8a7d6b">• both PLAY fixed</span></div>
+<h1>Game Hub 🐵</h1>
 <p>Two classic games. Play offline or online with friends using a 4-digit code. Voice announcements prevent cheating.</p>
 </div>
 <div class="gameList">
@@ -236,7 +236,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
       </div>
     </div>
     <div id="onlineConnectedBox" style="display:none;margin-top:14px;padding:12px;border-radius:12px;background:#e8f5e9;border:1px solid #a5d6a7;font-size:13px;font-weight:700;text-align:center"></div>
-    <div id="onlineStatus" style="display:none;margin-top:10px;padding:10px;border-radius:12px;font-size:12px;font-weight:700;text-align:center"></div>
+    <div id="onlineModalStatus" style="display:none;margin-top:10px;padding:10px;border-radius:12px;font-size:12px;font-weight:700;text-align:center"></div>
     <button class="btn full" style="margin-top:14px" onclick="closeModal('onlineModal')">Close</button>
     <button class="btn full" style="margin-top:6px;background:#fee2e2;border-color:#fecaca;color:#b91c1c;display:none" id="leaveOnlineBtn" onclick="leaveOnlineRoom()">Leave Room</button>
   </div>
@@ -267,23 +267,10 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
       </div>
     </div>
     <div id="tttConnectedBox" style="display:none;margin-top:14px;padding:12px;border-radius:12px;background:#e8f5e9;border:1px solid #a5d6a7;font-size:13px;font-weight:700;text-align:center"></div>
-    <div id="tttOnlineStatus" style="display:none;margin-top:10px;padding:10px;border-radius:12px;font-size:12px;font-weight:700;text-align:center"></div>
+    <div id="tttOnlineModalStatus" style="display:none;margin-top:10px;padding:10px;border-radius:12px;font-size:12px;font-weight:700;text-align:center"></div>
     <button class="btn full" style="margin-top:14px" onclick="closeModal('tttOnlineModal')">Close</button>
     <button class="btn full" style="margin-top:6px;background:#fee2e2;border-color:#fecaca;color:#b91c1c;display:none" id="tttLeaveBtn" onclick="leaveTTTOnlineRoom()">Leave Room</button>
   </div>
-</div>
-
-<div style="margin:14px 0;border-top:1px dashed var(--border)"></div>
-<div>
-<label style="font-size:12px;font-weight:700">Join Room</label>
-<div style="display:flex;gap:8px;margin-top:6px">
-<input id="tttJoinInput" class="input" placeholder="OTP" style="flex:1;text-align:center;letter-spacing:4px;font-size:20px" maxlength="4" inputmode="numeric">
-<button class="btn primary" style="height:46px" onclick="joinTTTRoom()">Join</button>
-</div>
-</div>
-<div id="tttConnectedBox" style="display:none;margin-top:14px;padding:10px;border-radius:12px;background:#e8f5e9;border:1px solid #a5d6a7;font-size:12px;font-weight:700;text-align:center"></div>
-<button class="btn full" style="margin-top:14px" onclick="closeModal('tttOnlineModal')">Close</button>
-</div>
 </div>
 
 <script>
@@ -330,17 +317,23 @@ function closeModal(id){document.getElementById(id).classList.remove('show')}
 function closeWin(){closeModal('winModal')}
 function confetti(){const c=document.getElementById('confetti');if(!c) return;c.innerHTML='';c.style.display='block';for(let i=0;i<80;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'%';d.style.background=['#c94a2b','#e8a24a','#2e261e','#0bb5c4','#d4af37'][Math.floor(Math.random()*5)];d.style.animationDuration=(1.2+Math.random()*1.5)+'s';d.style.animationDelay=Math.random()*0.5+'s';c.appendChild(d)}setTimeout(()=>{c.style.display='none';c.innerHTML=''},3000)}
 
-let peer=null,conn=null,roomCode=null,isHost=false,onlineConnected=false;
+function showOnlineChoice(){document.getElementById('onlineChoiceSection').style.display='block';document.getElementById('onlineCreateSection').style.display='none';document.getElementById('onlineJoinSection').style.display='none';}
+function showOnlineCreate(){document.getElementById('onlineChoiceSection').style.display='none';document.getElementById('onlineCreateSection').style.display='block';document.getElementById('onlineJoinSection').style.display='none';}
+function showOnlineJoin(){document.getElementById('onlineChoiceSection').style.display='none';document.getElementById('onlineCreateSection').style.display='none';document.getElementById('onlineJoinSection').style.display='block';}
+let peer=null,conn=null,roomCode=null,isHost=false,onlineConnected=false,onlineJoinTimer=null,onlineCreateRetries=0;
+const PEER_CONFIG={config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'turn:openrelay.metered.ca:80',username:'openrelayproject',credential:'openrelayproject'},{urls:'turn:openrelay.metered.ca:443',username:'openrelayproject',credential:'openrelayproject'}]}};
 function genRoomCode(){return Math.floor(1000+Math.random()*9000).toString();}
-function updateOnlineStatus(t,ok=true){const s=document.getElementById('onlineStatus');if(s){s.style.display='block';s.textContent=t;s.style.background=ok?'#e8f5e9':'#fee2e2';s.style.borderColor=ok?'#a5d6a7':'#fecaca';} const b=document.getElementById('onlineConnectedBox');if(b){b.style.display='block';b.textContent=t;}}
-function createOnlineRoom(){const code=genRoomCode();roomCode=code;isHost=true;document.getElementById('displayRoomCode').textContent=code;document.getElementById('createdCodeBox').style.display='block';if(peer) try{peer.destroy();}catch{} peer=new Peer('bingo25-'+code);peer.on('open',()=>{updateOnlineStatus('Room '+code+' created. Share code.');});peer.on('connection',c=>{conn=c;setupConnection();});}
-function joinOnlineRoom(){const code=document.getElementById('joinCodeInput').value.trim();if(code.length!==4){alert('Enter 4-digit code');return;}roomCode=code;isHost=false;if(peer) try{peer.destroy();}catch{} peer=new Peer();peer.on('open',()=>{conn=peer.connect('bingo25-'+code);setupConnection();updateOnlineStatus('Joining '+code+'...');});}
-function setupConnection(){if(!conn) return;conn.on('open',()=>{onlineConnected=true;updateOnlineStatus(isHost?`Friend joined! Room ${roomCode}`:`Connected to ${roomCode}`);document.getElementById('leaveOnlineBtn').style.display='block';if(phase==='setup')startGame();sendOnlineMessage({type:'hello',player:playerName});setTimeout(()=>closeModal('onlineModal'),800);});conn.on('data',d=>handleOnlineMessage(d));conn.on('close',()=>{onlineConnected=false;updateOnlineStatus('Disconnected',false);});}
+function clearOnlineJoinTimer(){if(onlineJoinTimer){clearTimeout(onlineJoinTimer);onlineJoinTimer=null;}}
+function updateOnlineStatus(t,ok=true){[document.getElementById('onlineStatus'),document.getElementById('onlineModalStatus')].forEach(s=>{if(s){s.style.display='block';s.textContent=t;s.style.background=ok?'#e8f5e9':'#fee2e2';s.style.borderColor=ok?'#a5d6a7':'#fecaca';}}); const b=document.getElementById('onlineConnectedBox');if(b){b.style.display='block';b.textContent=t;}}
+function createOnlineRoom(){onlineCreateRetries=0;attemptCreateOnlineRoom();}
+function attemptCreateOnlineRoom(){const code=genRoomCode();roomCode=code;isHost=true;document.getElementById('displayRoomCode').textContent=code;document.getElementById('createdCodeBox').style.display='block';if(peer) try{peer.destroy();}catch{} updateOnlineStatus('Setting up room...');peer=new Peer('bingo25-'+code,PEER_CONFIG);peer.on('open',()=>{updateOnlineStatus('Room '+code+' created. Share code.');});peer.on('connection',c=>{conn=c;setupConnection();});peer.on('error',err=>{if(err.type==='unavailable-id'&&onlineCreateRetries<5){onlineCreateRetries++;attemptCreateOnlineRoom();return;}updateOnlineStatus('Could not create room ('+err.type+'). Check your connection and try again.',false);});}
+function joinOnlineRoom(){const code=document.getElementById('joinCodeInput').value.trim();if(code.length!==4){alert('Enter 4-digit code');return;}roomCode=code;isHost=false;if(peer) try{peer.destroy();}catch{} clearOnlineJoinTimer();updateOnlineStatus('Connecting...');peer=new Peer(PEER_CONFIG);peer.on('open',()=>{conn=peer.connect('bingo25-'+code,{reliable:true});setupConnection();updateOnlineStatus('Joining '+code+'...');onlineJoinTimer=setTimeout(()=>{if(!onlineConnected){updateOnlineStatus('No response from room '+code+'. Check the code and that your friend still has it open, then try again.',false);try{if(peer)peer.destroy();}catch{}}},15000);});peer.on('error',err=>{clearOnlineJoinTimer();if(err.type==='peer-unavailable'){updateOnlineStatus('Room '+code+' not found. Check the code or ask your friend to create a new one.',false);}else{updateOnlineStatus('Connection error ('+err.type+'). Check your internet and try again.',false);}});}
+function setupConnection(){if(!conn) return;conn.on('open',()=>{clearOnlineJoinTimer();onlineConnected=true;updateOnlineStatus(isHost?`Friend joined! Room ${roomCode}`:`Connected to ${roomCode}`);document.getElementById('leaveOnlineBtn').style.display='block';if(phase==='setup')startGame();sendOnlineMessage({type:'hello',player:playerName});setTimeout(()=>closeModal('onlineModal'),800);});conn.on('data',d=>handleOnlineMessage(d));conn.on('close',()=>{onlineConnected=false;updateOnlineStatus('Disconnected',false);});conn.on('error',()=>{onlineConnected=false;updateOnlineStatus('Connection lost. Try rejoining.',false);});}
 function sendOnlineMessage(o){try{if(conn&&conn.open)conn.send(o);}catch{}}
 function handleOnlineMessage(d){if(!d||!d.type) return;if(d.type==='mark'){const idx=board.indexOf(d.num);if(idx===-1) return;if(d.action==='marked'&&!marked[idx]){marked[idx]=true;markStack.push(idx);completedLines=getDone(marked);renderGrid();save();speakNumber(d.num,'marked');}else if(d.action==='unmarked'&&marked[idx]){marked[idx]=false;markStack=markStack.filter(i=>i!==idx);completedLines=getDone(marked);renderGrid();save();speakNumber(d.num,'undo');}checkWin();}else if(d.type==='reset'){marked=Array(25).fill(false);markStack=[];completedLines=[];renderGrid();save();}else if(d.type==='newgame'){board=genBoard();marked=Array(25).fill(false);phase='setup';completedLines=[];markStack=[];startTime=null;renderPhase();renderGrid();save();}else if(d.type==='win'){speak(`${d.player} wins!`,true);openModal('winModal');document.getElementById('winText').textContent=`${d.player} Wins!`;confetti();cheer();}}
 function copyRoomCode(){if(!roomCode) return;navigator.clipboard.writeText(roomCode);}
 function shareRoomCode(){if(!roomCode) return;const txt=`Join my Bingo 25! OTP: ${roomCode}`;window.open('https://wa.me/?text='+encodeURIComponent(txt));}
-function leaveOnlineRoom(){try{if(conn)conn.close();if(peer)peer.destroy();}catch{} peer=null;conn=null;roomCode=null;onlineConnected=false;isHost=false;document.getElementById('createdCodeBox').style.display='none';document.getElementById('onlineConnectedBox').style.display='none';document.getElementById('onlineStatus').style.display='none';}
+function leaveOnlineRoom(){clearOnlineJoinTimer();try{if(conn)conn.close();if(peer)peer.destroy();}catch{} peer=null;conn=null;roomCode=null;onlineConnected=false;isHost=false;document.getElementById('createdCodeBox').style.display='none';document.getElementById('onlineConnectedBox').style.display='none';document.getElementById('onlineStatus').style.display='none';document.getElementById('leaveOnlineBtn').style.display='none';}
 
 let tttBoard=Array(9).fill(''),tttCurrent='X',tttActive=true,tttMySymbol='X',tttWins={X:0,O:0,draw:0},tttWinningLine=null;
 let tttPeer=null,tttConn=null,tttRoom=null,tttIsHost=false,tttOnline=false;
@@ -351,9 +344,17 @@ function checkTTTWin(){const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,
 function resetTTT(){tttBoard=Array(9).fill('');tttCurrent='X';tttActive=true;tttWinningLine=null;renderTTT();if(tttOnline&&tttConn&&tttConn.open)tttConn.send({type:'ttt-reset'});}
 function resetTTTScore(){tttWins={X:0,O:0,draw:0};renderTTT();}
 function setTTTMode(m){tttOnline=false;tttBoard=Array(9).fill('');tttCurrent='X';tttActive=true;tttWinningLine=null;renderTTT();document.getElementById('tttOnlineStatus').style.display='none';}
-function createTTTRoom(){const code=genRoomCode();tttRoom=code;tttIsHost=true;tttMySymbol='X';tttCurrent='X';tttOnline=true;document.getElementById('tttDisplayCode').textContent=code;document.getElementById('tttCreatedBox').style.display='block';if(tttPeer) try{tttPeer.destroy();}catch{} tttPeer=new Peer('ttt-'+code);tttPeer.on('open',()=>{document.getElementById('tttConnectedBox').style.display='block';document.getElementById('tttConnectedBox').textContent='Room '+code+' created';document.getElementById('tttOnlineStatus').style.display='block';document.getElementById('tttOnlineStatus').textContent='Room '+code+' — Share OTP';});tttPeer.on('connection',c=>{tttConn=c;setupTTTConnection();});}
-function joinTTTRoom(){const code=document.getElementById('tttJoinInput').value.trim();if(code.length!==4){alert('Enter code');return;}tttRoom=code;tttIsHost=false;tttMySymbol='O';tttOnline=true;if(tttPeer) try{tttPeer.destroy();}catch{} tttPeer=new Peer();tttPeer.on('open',()=>{tttConn=tttPeer.connect('ttt-'+code);setupTTTConnection();});}
-function setupTTTConnection(){if(!tttConn) return;tttConn.on('open',()=>{document.getElementById('tttConnectedBox').textContent=tttIsHost?`Joined! You X — Room ${tttRoom}`:`Connected! You O — Room ${tttRoom}`;document.getElementById('tttOnlineStatus').style.display='block';document.getElementById('tttOnlineStatus').textContent=`Online: You ${tttMySymbol} — Room ${tttRoom}`;tttBoard=Array(9).fill('');tttCurrent='X';tttActive=true;tttWinningLine=null;renderTTT();setTimeout(()=>closeModal('tttOnlineModal'),800);});tttConn.on('data',d=>{if(d.type==='ttt-move'){if(tttBoard[d.idx]===''){tttBoard[d.idx]=d.sym;checkTTTWin();if(tttActive){tttCurrent=tttCurrent==='X'?'O':'X';renderTTT();}}}else if(d.type==='ttt-reset'){tttBoard=Array(9).fill('');tttCurrent='X';tttActive=true;tttWinningLine=null;renderTTT();}});}
+function showTTTChoice(){document.getElementById('tttChoiceSection').style.display='block';document.getElementById('tttCreateSection').style.display='none';document.getElementById('tttJoinSection').style.display='none';}
+function showTTTCreate(){document.getElementById('tttChoiceSection').style.display='none';document.getElementById('tttCreateSection').style.display='block';document.getElementById('tttJoinSection').style.display='none';}
+function showTTTJoin(){document.getElementById('tttChoiceSection').style.display='none';document.getElementById('tttCreateSection').style.display='none';document.getElementById('tttJoinSection').style.display='block';}
+let tttJoinTimer=null,tttCreateRetries=0;
+function clearTTTJoinTimer(){if(tttJoinTimer){clearTimeout(tttJoinTimer);tttJoinTimer=null;}}
+function updateTTTStatus(t,ok=true){[document.getElementById('tttOnlineStatus'),document.getElementById('tttOnlineModalStatus')].forEach(s=>{if(s){s.style.display='block';s.textContent=t;s.style.background=ok?'#e8f5e9':'#fee2e2';s.style.borderColor=ok?'#a5d6a7':'#fecaca';}});}
+function createTTTRoom(){tttCreateRetries=0;attemptCreateTTTRoom();}
+function attemptCreateTTTRoom(){const code=genRoomCode();tttRoom=code;tttIsHost=true;tttMySymbol='X';tttCurrent='X';tttOnline=true;document.getElementById('tttDisplayCode').textContent=code;document.getElementById('tttCreatedBox').style.display='block';if(tttPeer) try{tttPeer.destroy();}catch{} updateTTTStatus('Setting up room...');tttPeer=new Peer('ttt-'+code,PEER_CONFIG);tttPeer.on('open',()=>{document.getElementById('tttConnectedBox').style.display='block';document.getElementById('tttConnectedBox').textContent='Room '+code+' created';updateTTTStatus('Room '+code+' — Share OTP');document.getElementById('tttLeaveBtn').style.display='block';});tttPeer.on('connection',c=>{tttConn=c;setupTTTConnection();});tttPeer.on('error',err=>{if(err.type==='unavailable-id'&&tttCreateRetries<5){tttCreateRetries++;attemptCreateTTTRoom();return;}updateTTTStatus('Could not create room ('+err.type+'). Check your connection and try again.',false);});}
+function joinTTTRoom(){const code=document.getElementById('tttJoinInput').value.trim();if(code.length!==4){alert('Enter code');return;}tttRoom=code;tttIsHost=false;tttMySymbol='O';tttOnline=true;if(tttPeer) try{tttPeer.destroy();}catch{} clearTTTJoinTimer();updateTTTStatus('Connecting...');tttPeer=new Peer(PEER_CONFIG);tttPeer.on('open',()=>{tttConn=tttPeer.connect('ttt-'+code,{reliable:true});setupTTTConnection();updateTTTStatus('Joining '+code+'...');document.getElementById('tttLeaveBtn').style.display='block';tttJoinTimer=setTimeout(()=>{if(!tttConn||!tttConn.open){updateTTTStatus('No response from room '+code+'. Check the code and that your friend still has it open, then try again.',false);try{if(tttPeer)tttPeer.destroy();}catch{}}},15000);});tttPeer.on('error',err=>{clearTTTJoinTimer();if(err.type==='peer-unavailable'){updateTTTStatus('Room '+code+' not found. Check the code or ask your friend to create a new one.',false);}else{updateTTTStatus('Connection error ('+err.type+'). Check your internet and try again.',false);}});}
+function setupTTTConnection(){if(!tttConn) return;tttConn.on('open',()=>{clearTTTJoinTimer();document.getElementById('tttConnectedBox').textContent=tttIsHost?`Joined! You X — Room ${tttRoom}`:`Connected! You O — Room ${tttRoom}`;updateTTTStatus(`Online: You ${tttMySymbol} — Room ${tttRoom}`);tttBoard=Array(9).fill('');tttCurrent='X';tttActive=true;tttWinningLine=null;renderTTT();setTimeout(()=>closeModal('tttOnlineModal'),800);});tttConn.on('data',d=>{if(d.type==='ttt-move'){if(tttBoard[d.idx]===''){tttBoard[d.idx]=d.sym;checkTTTWin();if(tttActive){tttCurrent=tttCurrent==='X'?'O':'X';renderTTT();}}}else if(d.type==='ttt-reset'){tttBoard=Array(9).fill('');tttCurrent='X';tttActive=true;tttWinningLine=null;renderTTT();}});tttConn.on('close',()=>{updateTTTStatus('Disconnected',false);});tttConn.on('error',()=>{updateTTTStatus('Connection lost. Try rejoining.',false);});}
+function leaveTTTOnlineRoom(){clearTTTJoinTimer();try{if(tttConn)tttConn.close();if(tttPeer)tttPeer.destroy();}catch{} tttPeer=null;tttConn=null;tttRoom=null;tttOnline=false;document.getElementById('tttCreatedBox').style.display='none';document.getElementById('tttConnectedBox').style.display='none';document.getElementById('tttOnlineStatus').style.display='none';document.getElementById('tttLeaveBtn').style.display='none';}
 function copyTTTRoomCode(){if(!tttRoom) return;navigator.clipboard.writeText(tttRoom);}
 function shareTTTRoomCode(){if(!tttRoom) return;const txt=`Join Tic Tac Toe OTP: ${tttRoom}`;window.open('https://wa.me/?text='+encodeURIComponent(txt));}
 
@@ -368,6 +369,6 @@ window.addEventListener('beforeunload',save);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
 setInterval(()=>{if(phase==='playing'&&startTime)renderPhase();},1000);
 </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}</script>
 </body>
 </html>
-<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}</script>
